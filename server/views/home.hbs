@@ -2,6 +2,9 @@
   {{#each puppies}}
   <div class="puppy-list">
     <a href="/puppies/{{id}}"><img class="img-circle" src="{{image}}" alt="{{name}}"></a>
+    <p>Name: {{name}}</p>
+    <p>Owned by: {{owner}}</p>
+    <p>Breed: {{breed}}</p>
   </div>
   {{/each}}
 </div>
