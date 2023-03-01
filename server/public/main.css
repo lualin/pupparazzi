@@ -3,6 +3,11 @@ body {
     font-family: 'Spirax', cursive;
 }
 
+div {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
 .container {
     display: flex;
     flex-wrap: wrap;
