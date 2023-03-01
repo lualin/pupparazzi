@@ -29,6 +29,17 @@ div {
     margin: 50px;
 }
 
+.add-pet {
+    margin-top: 25%;
+    border: black 1px solid;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    width: 100px;
+    height: 30px;
+    background-color: transparent;
+}
+
 .puppy {
     display: flex;
     flex-direction: column;
@@ -37,6 +48,7 @@ div {
 }
 
 .img-circle {
+    border: 1px rgb(115, 111, 111) solid;
     border-radius: 50%;
     object-fit: cover;
     width: 230px;

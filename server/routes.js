@@ -40,7 +40,7 @@ router.post('/:id/edit', (req, res) => {
   )
 
   // Update the puppy object with the new name
-  if (puppyIndex !== -1) {
+  try {
     puppiesData['puppies'][puppyIndex].name = updatedName // index given and update the puppy name
     puppiesData['puppies'][puppyIndex].breed = updatedBreed // index given and update the puppy breed
     puppiesData['puppies'][puppyIndex].owner = updatedOwner // index given and update the puppy owner
@@ -55,10 +55,11 @@ router.post('/:id/edit', (req, res) => {
 
     // Redirect the user back to the details page for the updated puppy
     res.redirect(`/puppies/${puppyId}`)
-  } else {
+  } catch {
     // if puppy id is not valid, head to 404 error page
     res.status(404).send('Puppy not found')
   }
 })
 
+// Module exports
 module.exports = router
