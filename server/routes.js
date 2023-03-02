@@ -1,4 +1,5 @@
 // Require calls
+const { error } = require('console')
 const express = require('express')
 const fs = require('fs')
 const path = require('path')
@@ -12,12 +13,19 @@ const router = express.Router()
 const dataPath = path.join(__dirname, '..', '/server/data', 'data.json')
 
 // Add new pet
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const newID = puppiesData['puppies'].length + 1
   const newName = req.body.name
   const newBreed = req.body.breed
   const newOwner = req.body.owner
-  const newImg = '/images/no-img.jpg'
+  const newImg = await fetch('https://dog.ceo/api/breeds/image/random')
+    .then((response) => response.json())
+    .then((data) => {
+      const url = data.message
+      return url
+    })
+    .catch((error) => console.error(error))
+
   let newPetObj = {
     id: newID,
     name: newName,

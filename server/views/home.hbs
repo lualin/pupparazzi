@@ -1,19 +1,4 @@
 <div class='container'>
-  {{#each puppies}}
-    <div class='puppy-list'>
-      <a href='/puppies/{{id}}'><img
-          class='img-circle'
-          src='{{image}}'
-          alt='{{name}}'
-        /></a>
-      <p>Name: {{name}}</p>
-      <p>Owned by: {{owner}}</p>
-      <p>Breed: {{breed}}</p>
-      <button class='delete-pet' onclick='deletePuppy({{id}})'>Delete</button>
-
-    </div>
-
-  {{/each}}
   <div class='puppy-list'>
     <img class='img-circle' src='/images/anonymous.png' alt='' />
     <form class='form' action='/puppies' method='post'>
@@ -52,4 +37,20 @@
       <input type='submit' value='add' class='add-pet' />
     </form>
   </div>
+  {{#each puppies}}
+    <div class='puppy-list'>
+      <a href='/puppies/{{id}}'><img
+          class='img-circle'
+          src='{{image}}'
+          alt='{{name}}'
+        /></a>
+      <p>Name: {{name}}</p>
+      <p>Owned by: {{owner}}</p>
+      <p>Breed: {{breed}}</p>
+      <button class='delete-pet' onclick='deletePuppy({{id}})'>Delete</button>
+
+    </div>
+
+  {{/each}}
+  
 </div>
