@@ -11,27 +11,93 @@ const router = express.Router()
 // Data path setting
 const dataPath = path.join(__dirname, '..', '/server/data', 'data.json')
 
-router.post('/add', (req, res) => {
+// Add new pet
+router.post('/', (req, res) => {
   const newID = puppiesData['puppies'].length + 1
   const newName = req.body.name
   const newBreed = req.body.breed
   const newOwner = req.body.owner
-  const newPetObj = {
+  const newImg = '/images/no-img.jpg'
+  let newPetObj = {
     id: newID,
     name: newName,
     owner: newOwner,
-    image: '',
+    image: newImg,
     breed: newBreed,
     _locals: {},
   }
 
   try {
     puppiesData['puppies'].push(newPetObj)
+
+    // console.log changes
+    console.log('-----------<Name>-----------')
+    console.log(`${newName} added\n`)
+
+    // pet breed change
+    console.log('-----------<Breed>-----------')
+    console.log(`${newBreed} added\n`)
+
+    // pet owner change
+    console.log('-----------<Owner>-----------')
+    console.log(`${newOwner} added\n`)
+    console.log('New pet added! So cute :)')
+
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+
+      // Parse the JSON data into a JavaScript object
+      const puppiesData = JSON.parse(data)
+
+      // Add the new puppy object to the puppies array
+      puppiesData.puppies.push(newPetObj)
+
+      // Convert the updated object back to JSON
+      const updatedData = JSON.stringify(puppiesData)
+
+      // Write the updated JSON data back to the file
+      fs.writeFile(dataPath, updatedData, 'utf8', (err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        console.log('New puppy added successfully!')
+      })
+    })
+    // Redirect to home once added successfully
     res.redirect('/')
   } catch (error) {
     console.log(error)
   }
 })
+
+// Delete pet
+const deletePuppy = (id) => {
+  fs.readFile(dataPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+
+    const puppies = JSON.parse(data).puppies
+    const index = puppies.findIndex((puppy) => puppy.id === id)
+    if (index !== -1) {
+      puppies.splice(index, 1)
+      fs.writeFile(dataPath, JSON.stringify({ puppies }), (err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        console.log(`Puppy with ID ${id} has been deleted.`)
+      })
+    } else {
+      console.log(`Puppy with ID ${id} was not found.`)
+    }
+  })
+}
 
 // '/puppies/:id', id paramter given to find a puppy with same id as the param
 router.get('/:id', (req, res) => {
