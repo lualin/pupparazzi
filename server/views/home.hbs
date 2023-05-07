@@ -47,8 +47,9 @@
       <p>Name: {{name}}</p>
       <p>Owned by: {{owner}}</p>
       <p>Breed: {{breed}}</p>
-      <button class='delete-pet' onclick='deletePuppy({{id}})'>Delete</button>
-
+        <form class='form' action='/puppies/{{id}}/delete' method='post'>
+            <input type='submit' value='delete' class='delete-pet' />
+        </form>
     </div>
 
   {{/each}}

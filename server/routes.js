@@ -82,31 +82,6 @@ router.post('/', async (req, res) => {
   }
 })
 
-// Delete pet
-const deletePuppy = (id) => {
-  fs.readFile(dataPath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(err)
-      return
-    }
-
-    const puppies = JSON.parse(data).puppies
-    const index = puppies.findIndex((puppy) => puppy.id === id)
-    if (index !== -1) {
-      puppies.splice(index, 1)
-      fs.writeFile(dataPath, JSON.stringify({ puppies }), (err) => {
-        if (err) {
-          console.error(err)
-          return
-        }
-        console.log(`Puppy with ID ${id} has been deleted.`)
-      })
-    } else {
-      console.log(`Puppy with ID ${id} was not found.`)
-    }
-  })
-}
-
 // '/puppies/:id', id paramter given to find a puppy with same id as the param
 router.get('/:id', (req, res) => {
   // Find from puppies json file where the id params matches to puppy id
@@ -167,6 +142,34 @@ router.post('/:id/edit', async (req, res) => {
 
     // Redirect the user back to the details page for the updated puppy
     await res.redirect(`/puppies/${puppyId}`)
+  } catch {
+    // if puppy id is not valid, head to 404 error page
+    res.status(404).send('Puppy not found')
+  }
+})
+
+router.post('/:id/delete', async (req, res) => {
+  const puppyId = parseInt(req.params.id) // parameter to integer
+  const puppyIndex = puppiesData['puppies'].findIndex(
+    (elem) => elem.id === puppyId // find puppy id that matches the param given
+  )
+  try {
+    // console.log changes made
+    console.log(`Puppy id:${puppyId} deleted successfully!`)
+
+    // Delete the puppy object from the array
+    puppiesData['puppies'].splice(puppyIndex, 1)
+
+    // Write the updated data back to the file
+    fs.writeFile(dataPath, JSON.stringify(puppiesData), (err) => {
+      if (err) throw err
+      // if error incurs, throw error
+      // or console.log successful msg
+      console.log('All data updated.')
+    })
+
+    // Redirect the user back to the home page
+    await res.redirect('/')
   } catch {
     // if puppy id is not valid, head to 404 error page
     res.status(404).send('Puppy not found')
